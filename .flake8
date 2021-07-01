@@ -1,0 +1,6 @@
+[flake8]
+exclude = .git,__pycache__,venv dir,frontend dir
+max-complexity = 10
+
+;F401: module is imported but unused
+ignore = F401
