@@ -1,0 +1,6 @@
+FROM node:alpine
+WORKDIR '/app'
+COPY frontend/package.json .
+RUN npm install
+RUN apk add curl
+COPY frontend .
