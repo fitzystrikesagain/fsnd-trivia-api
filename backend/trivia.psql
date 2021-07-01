@@ -24,7 +24,7 @@ SET default_with_oids = false;
 -- Name: categories; Type: TABLE; Schema: public; Owner: kenjennings
 --
 
-CREATE TABLE public.categories (
+create TABLE public.categories (
     id integer NOT NULL,
     type text
 );
@@ -36,7 +36,7 @@ ALTER TABLE public.categories OWNER TO kenjennings;
 -- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: kenjennings
 --
 
-CREATE SEQUENCE public.categories_id_seq
+create SEQUENCE public.categories_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -59,7 +59,7 @@ ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
 -- Name: questions; Type: TABLE; Schema: public; Owner: kenjennings
 --
 
-CREATE TABLE public.questions (
+create TABLE public.questions (
     id integer NOT NULL,
     question text,
     answer text,
@@ -74,7 +74,7 @@ ALTER TABLE public.questions OWNER TO kenjennings;
 -- Name: questions_id_seq; Type: SEQUENCE; Schema: public; Owner: kenjennings
 --
 
-CREATE SEQUENCE public.questions_id_seq
+create SEQUENCE public.questions_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
