@@ -12,12 +12,12 @@ services:
       - /app/node_modules
       - ./frontend:/app
     restart: unless-stopped
-  flask:
+  trivia-api:
     build:
       context: .
       dockerfile: Dockerfile-backend
     command: flask run -h "0.0.0.0"
-    container_name: flask-api
+    container_name: trivia-api
     depends_on:
       - postgres
     env_file:
