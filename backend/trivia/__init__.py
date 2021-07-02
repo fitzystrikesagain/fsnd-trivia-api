@@ -1,7 +1,7 @@
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
 
-from ..models import setup_db, Question, Category
+from models import setup_db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
 
@@ -42,7 +42,7 @@ def create_app(test_config=None):
             "categories": [c.type for c in cat_list]
         })
 
-    @app.route("/questions")
+    @app.route("/questions", methods=["GET"])
     def fetch_questions():
         """
         Create an endpoint to handle GET requests for questions,
@@ -71,12 +71,12 @@ def create_app(test_config=None):
             "categories": categories
         })
 
-    @app.route("/questions/$<int:question_id>", methods=["GET"])
+    @app.route("/questions/<int:question_id>", methods=["GET"])
     def get_question_by_id(question_id):
         question = Question.query.get(question_id).format()
         return jsonify({
             "status": "success",
-            "deleted": question
+            "question": question.format()
         })
 
     @app.route("/questions/<int:question_id>", methods=["DELETE"])
