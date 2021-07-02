@@ -1,5 +1,9 @@
 import os
+import sys
+import time
+
 from sqlalchemy import Column, String, Integer, create_engine
+from sqlalchemy.exc import OperationalError
 from flask_sqlalchemy import SQLAlchemy
 import json
 
@@ -23,7 +27,14 @@ def setup_db(app, database_path=DB_URI):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    db.create_all()
+    try:
+        db.create_all()
+    # If Postgres isn't up, log the Exception and wait a few; the container
+    # will restart automatically
+    except OperationalError as e:
+        print(e, file=sys.stderr)
+        print("Waiting on Postgres initialization")
+        time.sleep(5)
 
 
 '''

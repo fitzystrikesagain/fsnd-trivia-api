@@ -1,6 +1,4 @@
---
 -- PostgreSQL database dump
---
 
 -- Dumped from database version 11.3
 -- Dumped by pg_dump version 11.3
@@ -20,9 +18,7 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
---
 -- Name: categories; Type: TABLE; Schema: public; Owner: kenjennings
---
 
 create TABLE public.categories (
     id integer NOT NULL,
@@ -32,9 +28,7 @@ create TABLE public.categories (
 
 ALTER TABLE public.categories OWNER TO kenjennings;
 
---
 -- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: kenjennings
---
 
 create SEQUENCE public.categories_id_seq
     AS integer
@@ -47,17 +41,13 @@ create SEQUENCE public.categories_id_seq
 
 ALTER TABLE public.categories_id_seq OWNER TO kenjennings;
 
---
 -- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner:
-kenjennings
---
+-- kenjennings
 
 ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
 
 
---
 -- Name: questions; Type: TABLE; Schema: public; Owner: kenjennings
---
 
 create TABLE public.questions (
     id integer NOT NULL,
@@ -70,9 +60,7 @@ create TABLE public.questions (
 
 ALTER TABLE public.questions OWNER TO kenjennings;
 
---
 -- Name: questions_id_seq; Type: SEQUENCE; Schema: public; Owner: kenjennings
---
 
 create SEQUENCE public.questions_id_seq
     AS integer
@@ -85,32 +73,24 @@ create SEQUENCE public.questions_id_seq
 
 ALTER TABLE public.questions_id_seq OWNER TO kenjennings;
 
---
 -- Name: questions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner:
-kenjennings
---
+-- kenjennings
 
 ALTER SEQUENCE public.questions_id_seq OWNED BY public.questions.id;
 
 
---
 -- Name: categories id; Type: DEFAULT; Schema: public; Owner: kenjennings
---
 
 ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.categories_id_seq'::regclass);
 
 
---
 -- Name: questions id; Type: DEFAULT; Schema: public; Owner: kenjennings
---
 
 ALTER TABLE ONLY public.questions ALTER COLUMN id SET DEFAULT nextval('public.questions_id_seq'::regclass);
 
 
---
 -- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner:
-kenjennings
---
+--kenjennings
 
 COPY public.categories (id, type) FROM stdin;
 1	Science
@@ -122,10 +102,8 @@ COPY public.categories (id, type) FROM stdin;
 \.
 
 
---
 -- Data for Name: questions; Type: TABLE DATA; Schema: public; Owner:
-kenjennings
---
+--kenjennings
 
 COPY public.questions (id, question, answer, difficulty, category) FROM stdin;
 5	Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?	Maya Angelou	2	4
@@ -150,50 +128,39 @@ COPY public.questions (id, question, answer, difficulty, category) FROM stdin;
 \.
 
 
---
+--'
 -- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner:
-kenjennings
---
+--kenjennings
 
 SELECT pg_catalog.setval('public.categories_id_seq', 6, true);
 
 
---
 -- Name: questions_id_seq; Type: SEQUENCE SET; Schema: public; Owner:
-kenjennings
---
+--kenjennings
 
 SELECT pg_catalog.setval('public.questions_id_seq', 23, true);
 
 
---
 -- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public;
-Owner: kenjennings
---
+--Owner: kenjennings
 
 ALTER TABLE ONLY public.categories
     ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
 
 
---
 -- Name: questions questions_pkey; Type: CONSTRAINT; Schema: public; Owner:
-kenjennings
---
+--kenjennings
 
 ALTER TABLE ONLY public.questions
     ADD CONSTRAINT questions_pkey PRIMARY KEY (id);
 
 
---
 -- Name: questions category; Type: FK CONSTRAINT; Schema: public; Owner:
-kenjennings
---
+--kenjennings
 
 ALTER TABLE ONLY public.questions
     ADD CONSTRAINT category FOREIGN KEY (category) REFERENCES public.categories(id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
---
 -- PostgreSQL database dump complete
---
 
