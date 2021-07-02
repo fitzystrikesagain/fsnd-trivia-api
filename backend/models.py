@@ -16,10 +16,10 @@ DB_URI = f"postgresql://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:5432/{PG_DB}"
 
 db = SQLAlchemy()
 
-'''
+"""
 setup_db(app)
     binds a flask application and a SQLAlchemy service
-'''
+"""
 
 
 def setup_db(app, database_path=DB_URI):
@@ -37,10 +37,10 @@ def setup_db(app, database_path=DB_URI):
         time.sleep(5)
 
 
-'''
+"""
 Question
 
-'''
+"""
 
 
 class Question(db.Model):
@@ -79,10 +79,10 @@ class Question(db.Model):
         }
 
 
-'''
+"""
 Category
 
-'''
+"""
 
 
 class Category(db.Model):
