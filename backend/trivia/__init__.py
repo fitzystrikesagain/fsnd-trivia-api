@@ -41,19 +41,12 @@ def create_app(test_config=None):
         """
         Create an endpoint to handle GET requests for all available categories.
         """
-        cat_list = Category.query.order_by(Category.id).all()
+        cat_list = Category.query.all()
+        print([c.format() for c in cat_list])
         return jsonify({
             "status": "success",
             "categories": [c.format() for c in cat_list]
         })
-
-    """
-    TEST: At this point, when you start the application
-    you should see questions and categories generated,
-    ten questions per page and pagination at the bottom of the screen for
-    three pages.
-    Clicking on the page numbers should update the questions.
-    """
 
     @app.route("/questions")
     def fetch_questions():
@@ -62,9 +55,14 @@ def create_app(test_config=None):
         including pagination (every 10 questions).
         This endpoint should return a list of questions,
         number of total questions, current category, categories
+        TEST: At this point, when you start the application
+        you should see questions and categories generated,
+        ten questions per page and pagination at the bottom of the screen for
+        three pages.
+        Clicking on the page numbers should update the questions.
         """
-        selection = Question.query.order_by(Question.id).all()
-        cat_obj_list = Category.query.order_by(Category.type).all()
+        selection = Question.query.all()
+        cat_obj_list = Category.query.all()
         categories = [c.type for c in cat_obj_list]
         current_questions = paginate_questions(request, selection)
 
@@ -75,19 +73,41 @@ def create_app(test_config=None):
             "status": "success",
             "questions": current_questions,
             "total_questions": len(selection),
-            "current_category": "",
+            "current_category": 1,
             "categories": categories
+        })
+
+    @app.route("/questions/$<int:question_id>", methods=["GET"])
+    def get_question_by_id(question_id):
+        question = Question.query.get(question_id).format()
+        return jsonify({
+            "status": "success",
+            "deleted": question
         })
 
     """
     @TODO:
     Create an endpoint to DELETE question using a question ID.
-
     TEST: When you click the trash icon next to a question, the question
     will
     be removed. This removal will persist in the database and when you
     refresh the page.
     """
+
+    @app.route("/questions/<int:question_id>", methods=["DELETE"])
+    def delete_question(question_id):
+        try:
+            question = Question.query.get(question_id)
+            if not question:
+                abort(404)
+            question.delete()
+            return jsonify({
+                "status": "success",
+                "deleted": question.id
+            })
+        except AttributeError as e:
+            print(e, file=sys.stderr)
+            abort(404)
 
     """
     @TODO:
@@ -119,6 +139,20 @@ def create_app(test_config=None):
     categories in the left column will cause only questions of that
     category to be shown.
     """
+
+    @app.route("/categories/<int:category_id>/questions", methods=["GET"])
+    def question_by_category(category_id):
+        category_id += 1
+        print(category_id, file=sys.stderr)
+        questions = Question.query.filter(
+            Question.category == category_id).all()
+        print([q.format() for q in questions], file=sys.stderr)
+        return jsonify({
+            "status": "success",
+            "questions": [q.format() for q in questions],
+            "total_questions": len(questions),
+            "current_category": category_id
+        })
 
     """
     @TODO:
