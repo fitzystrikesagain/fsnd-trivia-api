@@ -42,10 +42,9 @@ def create_app(test_config=None):
         Create an endpoint to handle GET requests for all available categories.
         """
         cat_list = Category.query.all()
-        print([c.format() for c in cat_list])
         return jsonify({
             "status": "success",
-            "categories": [c.format() for c in cat_list]
+            "categories": [c.type for c in cat_list]
         })
 
     @app.route("/questions")
@@ -85,17 +84,13 @@ def create_app(test_config=None):
             "deleted": question
         })
 
-    """
-    @TODO:
-    Create an endpoint to DELETE question using a question ID.
-    TEST: When you click the trash icon next to a question, the question
-    will
-    be removed. This removal will persist in the database and when you
-    refresh the page.
-    """
-
     @app.route("/questions/<int:question_id>", methods=["DELETE"])
     def delete_question(question_id):
+        """
+        TEST: When you click the trash icon next to a question, the question
+        will be removed. This removal will persist in the database and when you
+        refresh the page.
+        """
         try:
             question = Question.query.get(question_id)
             if not question:
@@ -106,19 +101,30 @@ def create_app(test_config=None):
                 "deleted": question.id
             })
         except AttributeError as e:
-            print(e, file=sys.stderr)
             abort(404)
 
-    """
-    @TODO:
-    Create an endpoint to POST a new question,
-    which will require the question and answer text,
-    category, and difficulty score.
-
-    TEST: When you submit a question on the "Add" tab,
-    the form will clear and the question will appear at the end of the last
-    page of the questions list in the "List" tab.
-    """
+    @app.route("/questions", methods=["POST"])
+    def create_question():
+        """
+        Create an endpoint to POST a new question,
+        which will require the question and answer text,
+        category, and difficulty score.
+        TEST: When you submit a question on the "Add" tab,
+        the form will clear and the question will appear at the end of the last
+        page of the questions list in the "List" tab.
+        """
+        data = request.get_json()
+        question = Question(
+            question=data["question"],
+            answer=data["answer"],
+            difficulty=data["difficulty"],
+            category=str(int(data["category"]) + 1)
+        )
+        question.insert()
+        return jsonify({
+            "status": "success",
+            "data": question.format(),
+        })
 
     """
     @TODO:
@@ -143,10 +149,8 @@ def create_app(test_config=None):
     @app.route("/categories/<int:category_id>/questions", methods=["GET"])
     def question_by_category(category_id):
         category_id += 1
-        print(category_id, file=sys.stderr)
         questions = Question.query.filter(
             Question.category == category_id).all()
-        print([q.format() for q in questions], file=sys.stderr)
         return jsonify({
             "status": "success",
             "questions": [q.format() for q in questions],
