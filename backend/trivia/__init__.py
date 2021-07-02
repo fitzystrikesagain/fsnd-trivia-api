@@ -1,10 +1,5 @@
-import os
-import sys
-
 from flask import Flask, request, abort, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-import random
 
 from ..models import setup_db, Question, Category
 
@@ -126,28 +121,29 @@ def create_app(test_config=None):
             "data": question.format(),
         })
 
-    """
-    @TODO:
-    Create a POST endpoint to get questions based on a search term.
-    It should return any questions for whom the search term
-    is a substring of the question.
+    def search_questions():
+        """
+        @TODO:
+        Create a POST endpoint to get questions based on a search term.
+        It should return any questions for whom the search term
+        is a substring of the question.
 
-    TEST: Search by any phrase. The questions list will update to include
-    only question that include that string within their question.
-    Try using the word "title" to start.
-    """
-
-    """
-    @TODO:
-    Create a GET endpoint to get questions based on category.
-
-    TEST: In the "List" tab / main screen, clicking on one of the
-    categories in the left column will cause only questions of that
-    category to be shown.
-    """
+        TEST: Search by any phrase. The questions list will update to include
+        only question that include that string within their question.
+        Try using the word "title" to start.
+        """
+        pass
 
     @app.route("/categories/<int:category_id>/questions", methods=["GET"])
     def question_by_category(category_id):
+        """
+        Create a GET endpoint to get questions based on category.
+
+        TEST: In the "List" tab / main screen, clicking on one of the
+        categories in the left column will cause only questions of that
+        category to be shown.
+
+        """
         category_id += 1
         questions = Question.query.filter(
             Question.category == category_id).all()
@@ -158,17 +154,19 @@ def create_app(test_config=None):
             "current_category": category_id
         })
 
-    """
-    @TODO:
-    Create a POST endpoint to get questions to play the quiz.
-    This endpoint should take category and previous question parameters
-    and return a random questions within the given category,
-    if provided, and that is not one of the previous questions.
+    def start_quiz():
+        """
+        @TODO:
+        Create a POST endpoint to get questions to play the quiz.
+        This endpoint should take category and previous question parameters
+        and return a random questions within the given category,
+        if provided, and that is not one of the previous questions.
 
-    TEST: In the "Play" tab, after a user selects "All" or a category,
-    one question at a time is displayed, the user is allowed to answer
-    and shown whether they were correct or not.
-    """
+        TEST: In the "Play" tab, after a user selects "All" or a category,
+        one question at a time is displayed, the user is allowed to answer
+        and shown whether they were correct or not.
+        """
+        pass
 
     """
     @TODO:
