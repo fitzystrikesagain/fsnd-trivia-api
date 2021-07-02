@@ -4,10 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 
 database_name = "trivia"
-PG_USER = os.environ.get("PG_USER")
-PG_HOST = os.environ.get("PG_HOST")
-PG_DB = os.environ.get("PG_DB")
-PG_PASSWORD = os.environ.get("PG_PASSWORD")
+PG_USER = os.environ.get("POSTGRES_USER")
+PG_HOST = os.environ.get("POSTGRES_HOST")
+PG_DB = os.environ.get("POSTGRES_DB")
+PG_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
 DB_URI = f"postgresql://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:5432/{PG_DB}"
 
 db = SQLAlchemy()
