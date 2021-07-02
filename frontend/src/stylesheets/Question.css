@@ -4,6 +4,7 @@
 }
 
 .categories-list {
+  cursor: pointer;
   flex-basis: 25%;
   flex-shrink: 2;
 }
@@ -51,6 +52,7 @@
   color: white;
   padding: 3px 5px;
   margin-left: 0px !important;
+  cursor: pointer;
 }
 
 span.page-num {
@@ -71,5 +73,6 @@ img.category {
 }
 
 img.delete {
+  cursor: pointer;
   width: 20px;
 }
