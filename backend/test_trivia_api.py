@@ -103,16 +103,12 @@ class TriviaTestCase(unittest.TestCase):
             "previous_questions": [],
             "quiz_category": {"type": "History", "id": "3"}
         }
-        # data = {
-        #     "previous_questions": [],
-        #     "quiz_category": self.new_question["category"]
-        # }
         res = self.client().post("/quizzes", json=data)
         response = res.json["question"]
         self.assertEqual(res.status_code, 200)
-        # self.assertEqual(res.json["status"], "success")
-        # self.assertEqual(response["question"], TEST_QUESTION)
-        # self.assertEqual(response["answer"], self.new_question["answer"])
+        self.assertEqual(res.json["status"], "success")
+        self.assertEqual(response["question"], TEST_QUESTION)
+        self.assertEqual(response["answer"], self.new_question["answer"])
 
 
 if __name__ == "main":
