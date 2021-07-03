@@ -5,7 +5,6 @@ import time
 from sqlalchemy import Column, String, Integer, create_engine
 from sqlalchemy.exc import OperationalError
 from flask_sqlalchemy import SQLAlchemy
-import json
 
 database_name = "trivia"
 PG_USER = os.environ.get("POSTGRES_USER")

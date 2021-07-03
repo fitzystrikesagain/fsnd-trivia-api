@@ -49,11 +49,6 @@ def create_app(test_config=None):
         including pagination (every 10 questions).
         This endpoint should return a list of questions,
         number of total questions, current category, categories
-        TEST: At this point, when you start the application
-        you should see questions and categories generated,
-        ten questions per page and pagination at the bottom of the screen for
-        three pages.
-        Clicking on the page numbers should update the questions.
         """
         selection = Question.query.all()
         cat_obj_list = Category.query.all()

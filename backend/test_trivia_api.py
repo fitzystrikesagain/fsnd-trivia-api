@@ -45,12 +45,14 @@ class TriviaTestCase(unittest.TestCase):
             "category": "4"
         }
 
-        Question(
+        question = Question(
             question=self.new_question["question"],
             answer=self.new_question["answer"],
             difficulty=self.new_question["difficulty"],
             category=self.new_question["category"],
-        ).insert()
+        )
+        question.insert()
+        self.test_question_id = question.id
 
     def tearDown(self):
         questions = Question.query.filter(Question.question == TEST_QUESTION)
@@ -83,6 +85,14 @@ class TriviaTestCase(unittest.TestCase):
         """
         print(self.test_create_question.__doc__)
         res = self.client().post("/questions", json=self.new_question)
+        self.assertEqual(res.status_code, 200)
+
+    def test_delete_question(self):
+        """
+        DELETE /questions/<test_question_id> should return 200
+        """
+        print(self.test_delete_question.__doc__)
+        res = self.client().delete(f"/questions/{self.test_question_id}")
         self.assertEqual(res.status_code, 200)
 
 
