@@ -60,40 +60,46 @@ class TriviaTestCase(unittest.TestCase):
             q.delete()
 
     def get_endpoints_helper(self, endpoint, status_code=200):
-        """
-        GET {endpoint} should return 200
-        """
+        """GET {endpoint} should return 200"""
         print(self.get_endpoints_helper.__doc__.format(endpoint=endpoint))
         res = self.client().get(endpoint)
         return res.status_code == status_code
 
     def test_categories_endpoint(self):
-        """
-        GET /categories should return 200
-        """
+        """GET /categories should return 200"""
+        self.assertTrue(self.get_endpoints_helper(endpoint="/categories"))
 
     def test_questions_endpoint(self):
-        """
-        GET /questions should return 200
-        """
-        self.assertTrue(self.get_endpoints_helper(endpoint="/categories"))
+        """GET /questions should return 200"""
         self.assertTrue(self.get_endpoints_helper(endpoint="/questions"))
 
     def test_create_question(self):
-        """
-        POST /questions should return 200
-        """
+        """POST /questions should return 200"""
         print(self.test_create_question.__doc__)
         res = self.client().post("/questions", json=self.new_question)
         self.assertEqual(res.status_code, 200)
 
     def test_delete_question(self):
-        """
-        DELETE /questions/<test_question_id> should return 200
-        """
+        """DELETE /questions/<test_question_id> should return 200"""
         print(self.test_delete_question.__doc__)
         res = self.client().delete(f"/questions/{self.test_question_id}")
         self.assertEqual(res.status_code, 200)
+
+    def test_search_endpoint(self):
+        """POST /questions/search should return 200"""
+        print(self.test_search_endpoint.__doc__)
+        request = {"searchTerm": "foo"}
+        res = self.client().post("/questions/search", json=request)
+        self.assertEqual(res.status_code, 200)
+
+    def test_search_functionality(self):
+        """POST /questions/search should return the correct results"""
+        print(self.test_search_functionality.__doc__)
+        request = {"searchTerm": "Nobel"}
+        res = self.client().post("/questions/search", json=request)
+        response = res.json
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response["questions"][0]["answer"], "Marie Curie")
 
 
 if __name__ == "main":

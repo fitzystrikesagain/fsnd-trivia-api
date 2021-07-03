@@ -1,3 +1,5 @@
+import sys
+
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
 
@@ -77,9 +79,7 @@ def create_app(test_config=None):
     @app.route("/questions/<int:question_id>", methods=["DELETE"])
     def delete_question(question_id):
         """
-        TEST: When you click the trash icon next to a question, the question
-        will be removed. This removal will persist in the database and when you
-        refresh the page.
+        Deletes a question from the database and trivia app
         """
         try:
             question = Question.query.get(question_id)
@@ -99,9 +99,6 @@ def create_app(test_config=None):
         Create an endpoint to POST a new question,
         which will require the question and answer text,
         category, and difficulty score.
-        TEST: When you submit a question on the "Add" tab,
-        the form will clear and the question will appear at the end of the last
-        page of the questions list in the "List" tab.
         """
         data = request.get_json()
         question = Question(
@@ -116,6 +113,7 @@ def create_app(test_config=None):
             "data": question.format(),
         })
 
+    @app.route("/questions/search", methods=["POST"])
     def search_questions():
         """
         @TODO:
@@ -127,7 +125,14 @@ def create_app(test_config=None):
         only question that include that string within their question.
         Try using the word "title" to start.
         """
-        pass
+        pattern = f"%{request.get_json()['searchTerm']}%%"
+        res = Question.query.filter(Question.question.ilike(pattern)).all()
+        response = {
+            "questions": [q.format() for q in res],
+            "total_questions": len(res),
+            "current_category": ""
+        }
+        return jsonify(response)
 
     @app.route("/categories/<int:category_id>/questions", methods=["GET"])
     def question_by_category(category_id):
