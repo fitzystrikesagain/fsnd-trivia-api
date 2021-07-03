@@ -1,4 +1,4 @@
-import pdb
+import logging
 import random
 import sys
 
@@ -155,7 +155,6 @@ def create_app(test_config=None):
         """
         try:
             data = request.get_json()
-            print(data, file=sys.stderr)
             category_id = str(int(data["quiz_category"]["id"]) + 1)
             prev_questions = data["previous_questions"]
             all_questions = Question.query.filter(
@@ -176,13 +175,50 @@ def create_app(test_config=None):
                 "forceEnd": end
             })
         except Exception as e:
-            print(e, file=sys.stderr)
+            logging.error(e)
             abort(404)
 
     """
-    @TODO:
     Create error handlers for all expected errors
-    including 404 and 422.
     """
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({
+            "success": False,
+            "error": 404,
+            "message": "Resource Not Found"
+        }), 404
+
+    @app.errorhandler(422)
+    def unprocessable(error):
+        return jsonify({
+            "success": False,
+            "error": 422,
+            "message": "Unprocessable"
+        }), 422
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        return jsonify({
+            "success": False,
+            "error": 400,
+            "message": "Bad Request"
+        }), 400
+
+    @app.errorhandler(405)
+    def not_allowed(error):
+        return jsonify({
+            "success": False,
+            "error": 405,
+            "message": "Method Not Allowed"
+        }), 405
+
+    @app.errorhandler(500)
+    def Internal_server_error(error):
+        return jsonify({
+            "success": False,
+            "error": 500,
+            "message": "Internal Server Error"
+        }), 500
 
     return app
