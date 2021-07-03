@@ -1,5 +1,22 @@
 # Full Stack API Final Project
 
+## Build and run
+
+This projct runs in Docker and can be started with compose:
+```bash
+docker-compose up -d
+```
+This will start the frontend at `localhost:3000`, the backend at 
+`localhost:5000`, and Postgres at `localhost:5432`
+
+The `trivia.psql` is mounted to `init.sql` on the Postgres container, so 
+the database will automatically get seeded.
+
+Once the containers are running, you can run the tests like so:
+```bash
+docker exec -ti trivia-api python -m unittest test_trivia_api.py
+```
+
 ## Full Stack Trivia
 
 Udacity is invested in creating bonding experiences for its employees and
