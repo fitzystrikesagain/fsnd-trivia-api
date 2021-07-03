@@ -23,7 +23,7 @@ class QuestionView extends Component {
 
     getQuestions = () => {
         $.ajax({
-            url: `/questions?page=${this.state.page}`, //TODO: update request URL
+            url: `/questions?page=${this.state.page}`,
             type: "GET",
             success: (result) => {
                 this.setState({
@@ -62,8 +62,9 @@ class QuestionView extends Component {
     }
 
     getByCategory = (id) => {
+        id = parseInt(id) + 1
         $.ajax({
-            url: `/categories/${id}/questions`, //TODO: update request URL
+            url: `/categories/${id}/questions`,
             type: "GET",
             success: (result) => {
                 this.setState({
@@ -82,7 +83,7 @@ class QuestionView extends Component {
 
     submitSearch = (searchTerm) => {
         $.ajax({
-            url: `/questions/search`, //TODO: update request URL
+            url: `/questions/search`,
             type: "POST",
             dataType: 'json',
             contentType: 'application/json',
@@ -110,7 +111,7 @@ class QuestionView extends Component {
         if (action === 'DELETE') {
             if (window.confirm('are you sure you want to delete the question?')) {
                 $.ajax({
-                    url: `/questions/${id}`, //TODO: update request URL
+                    url: `/questions/${id}`,
                     type: "DELETE",
                     success: (result) => {
                         this.getQuestions();
@@ -132,7 +133,7 @@ class QuestionView extends Component {
                         this.getQuestions()
                     }}>Categories</h2>
                     <ul>
-                        {Object.keys(this.state.categories).map((id,) => (
+                        {Object.keys(this.state.categories).map((id) => (
                             <li key={id} onClick={() => {
                                 this.getByCategory(id)
                             }}>
@@ -151,7 +152,7 @@ class QuestionView extends Component {
                             key={q.id}
                             question={q.question}
                             answer={q.answer}
-                            category={this.state.categories[q.category]}
+                            category={this.state.categories[parseInt(q.category)]}
                             difficulty={q.difficulty}
                             questionAction={this.questionAction(q.id)}
                         />

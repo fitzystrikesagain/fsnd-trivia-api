@@ -15,16 +15,26 @@ class Question extends Component {
 
     render() {
         let {question, answer, category, difficulty} = this.props;
-        // TODO: fix undefined for category #6
-        if (typeof category === "undefined") {
-            category = "sports";
+
+        // the array index begins at zero
+        // this is a hacky solution to offset the category svgs
+        const svgOffsetMap = {
+            "Art": "science.svg",
+            "Science": "geography.svg",
+            "Geography": "art.svg",
+            "History": "geography.svg",
+            "Entertainment": "history.svg",
+            "Sports": "entertainment.svg",
+            undefined: "sports.svg"
         }
+
         return (
             <div className="Question-holder">
                 <div className="Question">{question}</div>
                 <div className="Question-status">
                     <img className="category"
-                         src={`../../${category.toLowerCase()}.svg`}/>
+                         alt="category icon svg"
+                         src={`../../${svgOffsetMap[category]}`}/>
                     <div className="difficulty">Difficulty: {difficulty}</div>
                     <img alt="rubbish bin" src="../../delete.png"
                          className="delete"

@@ -144,9 +144,7 @@ def create_app(test_config=None):
         category to be shown.
 
         """
-        category_id += 1
-        questions = Question.query.filter(
-            Question.category == category_id).all()
+        questions = Question.query.filter(Question.category == category_id).all()
         return jsonify({
             "status": "success",
             "questions": [q.format() for q in questions],
