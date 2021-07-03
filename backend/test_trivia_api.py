@@ -1,6 +1,3 @@
-import json
-import os
-import pdb
 import unittest
 from flask_sqlalchemy import SQLAlchemy
 
@@ -61,7 +58,6 @@ class TriviaTestCase(unittest.TestCase):
 
     def get_endpoints_helper(self, endpoint, status_code=200):
         """GET {endpoint} should return 200"""
-        print(self.get_endpoints_helper.__doc__.format(endpoint=endpoint))
         res = self.client().get(endpoint)
         return res.status_code == status_code
 
@@ -75,31 +71,48 @@ class TriviaTestCase(unittest.TestCase):
 
     def test_create_question(self):
         """POST /questions should return 200"""
-        print(self.test_create_question.__doc__)
         res = self.client().post("/questions", json=self.new_question)
         self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.json["status"], "success")
 
     def test_delete_question(self):
         """DELETE /questions/<test_question_id> should return 200"""
-        print(self.test_delete_question.__doc__)
         res = self.client().delete(f"/questions/{self.test_question_id}")
         self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.json["status"], "success")
 
     def test_search_endpoint(self):
         """POST /questions/search should return 200"""
-        print(self.test_search_endpoint.__doc__)
         request = {"searchTerm": "foo"}
         res = self.client().post("/questions/search", json=request)
         self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.json["status"], "success")
 
     def test_search_functionality(self):
         """POST /questions/search should return the correct results"""
-        print(self.test_search_functionality.__doc__)
         request = {"searchTerm": "Nobel"}
         res = self.client().post("/questions/search", json=request)
         response = res.json
         self.assertEqual(res.status_code, 200)
+        self.assertEqual(response["status"], "success")
         self.assertEqual(response["questions"][0]["answer"], "Marie Curie")
+
+    def test_quiz_endpoint(self):
+        """POST /quizzes should return 200"""
+        data = {
+            "previous_questions": [],
+            "quiz_category": {"type": "History", "id": "3"}
+        }
+        # data = {
+        #     "previous_questions": [],
+        #     "quiz_category": self.new_question["category"]
+        # }
+        res = self.client().post("/quizzes", json=data)
+        response = res.json["question"]
+        self.assertEqual(res.status_code, 200)
+        # self.assertEqual(res.json["status"], "success")
+        # self.assertEqual(response["question"], TEST_QUESTION)
+        # self.assertEqual(response["answer"], self.new_question["answer"])
 
 
 if __name__ == "main":

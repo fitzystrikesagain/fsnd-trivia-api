@@ -1,3 +1,5 @@
+import pdb
+import random
 import sys
 
 from flask import Flask, request, abort, jsonify
@@ -122,6 +124,7 @@ def create_app(test_config=None):
         pattern = f"%{request.get_json()['searchTerm']}%%"
         res = Question.query.filter(Question.question.ilike(pattern)).all()
         response = {
+            "status": "success",
             "questions": [q.format() for q in res],
             "total_questions": len(res),
             "current_category": ""
@@ -133,7 +136,8 @@ def create_app(test_config=None):
         """
         Create a GET endpoint to get questions based on category.
         """
-        questions = Question.query.filter(Question.category == category_id).all()
+        questions = Question.query.filter(
+            Question.category == category_id).all()
         return jsonify({
             "status": "success",
             "questions": [q.format() for q in questions],
@@ -141,19 +145,39 @@ def create_app(test_config=None):
             "current_category": category_id
         })
 
+    @app.route("/quizzes", methods=["POST"])
     def start_quiz():
         """
-        @TODO:
         Create a POST endpoint to get questions to play the quiz.
         This endpoint should take category and previous question parameters
         and return a random questions within the given category,
         if provided, and that is not one of the previous questions.
-
-        TEST: In the "Play" tab, after a user selects "All" or a category,
-        one question at a time is displayed, the user is allowed to answer
-        and shown whether they were correct or not.
         """
-        pass
+        try:
+            data = request.get_json()
+            print(data, file=sys.stderr)
+            category_id = str(int(data["quiz_category"]["id"]) + 1)
+            prev_questions = data["previous_questions"]
+            all_questions = Question.query.filter(
+                Question.category == category_id
+            ).all()
+            questions = [q for q in all_questions if q.id not in prev_questions]
+
+            if questions:
+                question = random.choice(questions).format()
+                end = False
+            else:
+                question = None
+                end = True
+
+            return jsonify({
+                "status": "success",
+                "question": question,
+                "forceEnd": end
+            })
+        except Exception as e:
+            print(e, file=sys.stderr)
+            abort(404)
 
     """
     @TODO:
